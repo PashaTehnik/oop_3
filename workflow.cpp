@@ -4,12 +4,12 @@
 #include "workflow.h"
 
 map<string, int> dict = {
-        { "readfile", 0 },
-        { "writefile", 1 },
-        { "grep", 2 },
-        { "sort", 3 },
-        { "replace", 4 },
-        { "dump", 5 }
+        { "readfile", 1 },
+        { "writefile", 2 },
+        { "grep", 3 },
+        { "sort", 4 },
+        { "replace", 5 },
+        { "dump", 6 }
 };
 map<int, pair<int, string>> com;
 vector<int> order;
@@ -76,26 +76,26 @@ Config::Config(const string& input) {
 IWorker *Factory::create_worker(int ind) {
     IWorker *worker = nullptr;
     switch (ind) {
-        case 0:
+        case 1:
             worker = new Readfile;
             break;
-        case 1:
+        case 2:
             worker = new Writefile;
             break;
-        case 2:
+        case 3:
             worker = new Grep;
             break;
-        case 3:
+        case 4:
             worker = new ::Sort;
             break;
-        case 4:
+        case 5:
             worker = new ::Replace;
             break;
-        case 5:
+        case 6:
             worker = new Dump;
             break;
         default:
-            throw runtime_error("Something went wrong");
+            throw runtime_error("Wrong block name");
     }
     return worker;
 }
@@ -246,11 +246,11 @@ void WorkFlow::do_work(string path) {
     bool flag_read = 0, flag_write = 0;
     for(auto it : order){
         pair<int, string> p = com[it];
-        if((flag_read&&(p.first==0))||(flag_write))
+        if((flag_read&&(p.first==1))||(flag_write))
             throw runtime_error("file read/write can't be in the middle of the schema.");
-        if (p.first==0)
-            flag_read = 1;
         if (p.first==1)
+            flag_read = 1;
+        if (p.first==2)
             flag_write = 1;
         worker = factory.create_worker(p.first);
         text = worker->do_work(text, &p.second);
