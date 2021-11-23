@@ -5,24 +5,21 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <utility>
 #include <vector>
-#include <list>
-#include <unordered_map>
 #include <map>
 #include <ostream>
+#include <algorithm>
 
-#define MIN(X,Y) ((X<Y) ? X : Y)
 
 using namespace std;
 
 typedef vector<string> Text;
 
+
 class Config{
 private:
     ifstream file;
 
-    vector<pair<int,pair<int,string>>> dict_IDs; // <ID in input file<ID workers_ID, args>>
     struct block{
         int id;
         int blocks_name;
@@ -43,47 +40,53 @@ public:
     virtual Text* do_work(Text *text, string *args);
 };
 
-class readfile : public IWorker{
+class Readfile : public IWorker{
 private:
     //vector<string>* argparse (string *args);
 public:
     Text* do_work(Text *text, string *args) override;
 };
 
-class writefile : public IWorker{
+class Writefile : public IWorker{
 
 public:
     Text* do_work(Text *text, string *args) override;
 };
 
-class grep : public IWorker{
+class Grep : public IWorker{
 private:
     bool contains(string str, string word);
 public:
     Text* do_work(Text *text, string *args) override;
 };
 
-class sort : public IWorker{
+class Sort : public IWorker{
 private:
     static bool comp(string a, string b);
 public:
     Text* do_work(Text *text, string *args) override;
 };
 
-class replace : public IWorker{
+class Replace : public IWorker{
+private:
+    string find(string str, string word1, string word2);
+    string rep(string str, int start, string& word1, string& word2);
+public:
+    Text* do_work(Text *text, string *args) override;
+};
+
+class Dump : public IWorker{
 
 public:
     Text* do_work(Text *text, string *args) override;
 };
-/*
-class dump : public IWorker{
 
-public:
-    Text* do_work(Text *text, string *args) override;
-};
-*/
-class factory{
+class Factory{
 public:
     IWorker* create_worker(int ind);
 };
 
+class WorkFlow{
+public:
+    void do_work(string path);
+};

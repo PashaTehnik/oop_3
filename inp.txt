@@ -1,15 +1,7 @@
-
-using namespace std;
-
-int main()
-{
-    string courseName;
-    string courseNum;
-
-    cout << "Enter a four letter course name: ";
-    cin >> courseName;
-
-    cout << "Enter a three digit course number: ";
-    cin >> courseNum;
-
-    return 0;
+desc
+1 = readfile C:\Users\polov\CLionProjects\oop_3\cmake-build-debug\in_file.txt
+2 = writefile C:\Users\polov\CLionProjects\oop_3\cmake-build-debug\out_file.txt
+3 = sort
+10 = replace word1 word2
+csed
+1 -> 3 -> 10 -> 3 -> 2
